@@ -8,14 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var message: String = "Hello, iOS!"
+    @State private var count: Int = 0  
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.white)
+                Text(message)
+                    .foregroundColor(.white)
+                    .padding()
+                
+                Text("Count: \(count)")
+                    .foregroundColor(.white)
+                    .padding()
+                
+                Button("Tap me!") {
+                    count += 1
+                    message = "Button tapped \(count) time\(count == 1 ? "" : "s")!"
+                }
+                .foregroundColor(.black)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(8)
+            }
+            .padding()
         }
-        .padding()
     }
 }
 
