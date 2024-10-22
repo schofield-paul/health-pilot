@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var message: String = "Hello, iOS!"
-    @State private var count: Int = 0  
+    var body: some View {
+        NavigationView {
+            FirstPageView()
+        }
+    }
+}
 
+struct FirstPageView: View {
+    @State private var message: String = "Hello, iOS!"
+    @State private var count: Int = 0
+    
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
@@ -35,8 +43,37 @@ struct ContentView: View {
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
+                
+                NavigationLink(destination: SecondPageView()) {
+                    Text("Go to Next Page")
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
             }
             .padding()
+        }
+    }
+}
+
+struct SecondPageView: View {
+    var body: some View {
+        ZStack {
+            Color.blue.edgesIgnoringSafeArea(.all)
+            VStack {
+                Text("This is the second page!")
+                    .foregroundColor(.white)
+                    .padding()
+                
+                NavigationLink(destination: FirstPageView()) {
+                    Text("Back to First Page")
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(8)
+                }
+            }
         }
     }
 }
@@ -44,3 +81,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
