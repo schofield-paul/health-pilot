@@ -58,6 +58,8 @@ struct FirstPageView: View {
 }
 
 struct SecondPageView: View {
+    @State private var userInput: String = ""
+
     var body: some View {
         ZStack {
             Color.blue.edgesIgnoringSafeArea(.all)
@@ -65,7 +67,18 @@ struct SecondPageView: View {
                 Text("This is the second page!")
                     .foregroundColor(.white)
                     .padding()
-                
+
+                TextField("Enter something", text: $userInput)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .padding()
+
+                Text("You typed: \(userInput)")
+                    .foregroundColor(.white)
+                    .padding()
+
                 NavigationLink(destination: FirstPageView()) {
                     Text("Back to First Page")
                         .foregroundColor(.black)
@@ -77,6 +90,7 @@ struct SecondPageView: View {
         }
     }
 }
+
 
 #Preview {
     ContentView()
