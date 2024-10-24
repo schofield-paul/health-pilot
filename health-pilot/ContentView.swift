@@ -59,10 +59,13 @@ struct FirstPageView: View {
 
 struct SecondPageView: View {
     @State private var userInput: String = ""
+    @State private var isGreenBackground: Bool = false
 
     var body: some View {
         ZStack {
-            Color.blue.edgesIgnoringSafeArea(.all)
+            (isGreenBackground ? Color.green : Color.blue)
+                .edgesIgnoringSafeArea(.all)
+
             VStack {
                 Text("This is the second page!")
                     .foregroundColor(.white)
@@ -79,6 +82,12 @@ struct SecondPageView: View {
                     .foregroundColor(.white)
                     .padding()
 
+                Toggle("Switch background color", isOn: $isGreenBackground)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .padding()
+
                 NavigationLink(destination: FirstPageView()) {
                     Text("Back to First Page")
                         .foregroundColor(.black)
@@ -90,7 +99,6 @@ struct SecondPageView: View {
         }
     }
 }
-
 
 #Preview {
     ContentView()
