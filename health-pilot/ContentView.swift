@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import UIKit
+
 
 struct ContentView: View {
     var body: some View {
@@ -38,6 +40,8 @@ struct FirstPageView: View {
                 Button("Tap me!") {
                     count += 1
                     message = "Button tapped \(count) time\(count == 1 ? "" : "s")!"
+                    let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                    impactFeedback.impactOccurred()
                 }
                 .foregroundColor(.black)
                 .padding()
@@ -64,6 +68,7 @@ struct SecondPageView: View {
     var body: some View {
         ZStack {
             (isGreenBackground ? Color.green : Color.blue)
+                .animation(.easeInOut, value: isGreenBackground)
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
