@@ -20,7 +20,7 @@ struct ContentView: View {
 struct FirstPageView: View {
     @State private var message: String = "Hello, iOS!"
     @State private var count: Int = 0
-    
+
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
@@ -47,7 +47,16 @@ struct FirstPageView: View {
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
-                
+
+                Button("Reset") {
+                    count = 0
+                    message = "Hello, iOS!"
+                }
+                .foregroundColor(.black)
+                .padding()
+                .background(Color.red)
+                .cornerRadius(8)
+
                 NavigationLink(destination: SecondPageView()) {
                     Text("Go to Next Page")
                         .foregroundColor(.black)
