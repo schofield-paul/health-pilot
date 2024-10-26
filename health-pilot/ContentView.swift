@@ -8,7 +8,6 @@
 import SwiftUI
 import UIKit
 
-
 struct ContentView: View {
     var body: some View {
         NavigationView {
@@ -18,98 +17,29 @@ struct ContentView: View {
 }
 
 struct FirstPageView: View {
-    @State private var message: String = "Hello, iOS!"
-    @State private var count: Int = 0
+    @State private var message = "Welcome to Breathe"
 
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             
-            VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.white)
+            VStack(spacing: 20) {
                 Text(message)
+                    .font(.largeTitle)
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(.top, 135)
                 
-                Text("Count: \(count)")
-                    .foregroundColor(.white)
-                    .padding()
-                
-                Button("Tap me!") {
-                    count += 1
-                    message = "Button tapped \(count) time\(count == 1 ? "" : "s")!"
-                    let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
-                    impactFeedback.impactOccurred()
+                ZStack {
+                    ForEach(0..<10) { index in
+                        Circle()
+                            .stroke(Color.blue.opacity(Double(10 - index) / 10), lineWidth: 2)
+                            .frame(width: CGFloat(100 + index * 20), height: CGFloat(100 + index * 20))
+                    }
                 }
-                .foregroundColor(.black)
-                .padding()
-                .background(Color.white)
-                .cornerRadius(8)
 
-                Button("Reset") {
-                    count = 0
-                    message = "Hello, iOS!"
-                }
-                .foregroundColor(.black)
-                .padding()
-                .background(Color.red)
-                .cornerRadius(8)
-
-                NavigationLink(destination: SecondPageView()) {
-                    Text("Go to Next Page")
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
+                Spacer()
             }
             .padding()
-        }
-    }
-}
-
-struct SecondPageView: View {
-    @State private var userInput: String = ""
-    @State private var isGreenBackground: Bool = false
-
-    var body: some View {
-        ZStack {
-            (isGreenBackground ? Color.green : Color.blue)
-                .animation(.easeInOut, value: isGreenBackground)
-                .edgesIgnoringSafeArea(.all)
-
-            VStack {
-                Text("This is the second page!")
-                    .foregroundColor(.white)
-                    .padding()
-
-                TextField("Enter something", text: $userInput)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .padding()
-
-                Text("You typed: \(userInput)")
-                    .foregroundColor(.white)
-                    .padding()
-
-                Toggle("Switch background color", isOn: $isGreenBackground)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .padding()
-
-                NavigationLink(destination: FirstPageView()) {
-                    Text("Back to First Page")
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(8)
-                }
-            }
         }
     }
 }
@@ -117,4 +47,3 @@ struct SecondPageView: View {
 #Preview {
     ContentView()
 }
-
