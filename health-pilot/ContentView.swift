@@ -51,7 +51,6 @@ struct FirstPageView: View {
                 }
                 .padding(.bottom, 50)
 
-                // Navigation link to Settings
                 NavigationLink(destination: SettingsPageView()) {
                     Text("Settings")
                         .font(.title2)
@@ -142,7 +141,7 @@ struct SettingsPageView: View {
                 Spacer()
             }
         }
-        .navigationBarHidden(true)
+        .navigationBarHidden(false)
     }
 }
 
