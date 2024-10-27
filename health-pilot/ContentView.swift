@@ -50,12 +50,23 @@ struct FirstPageView: View {
                         .padding(.horizontal, 40)
                 }
                 .padding(.bottom, 50)
+
+                // Navigation link to Settings
+                NavigationLink(destination: SettingsPageView()) {
+                    Text("Settings")
+                        .font(.title2)
+                        .foregroundColor(.gray)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.black)
+                        .cornerRadius(10)
+                        .padding(.horizontal, 40)
+                }
             }
             .padding()
         }
     }
 }
-
 
 struct SecondPageView: View {
     @State private var isExpanded = false
@@ -79,6 +90,59 @@ struct SecondPageView: View {
                     }
                 }
         }
+    }
+}
+
+struct SettingsPageView: View {
+    @State private var notificationsEnabled = false
+    @State private var selectedTheme = "Light"
+    
+    var body: some View {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 20) {
+                Text("Settings")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                    .padding(.top, 20)
+                
+                HStack {
+                    Text("Enable Notifications")
+                        .foregroundColor(.white)
+                    Spacer()
+                    Toggle("", isOn: $notificationsEnabled)
+                        .labelsHidden()
+                        .toggleStyle(SwitchToggleStyle(tint: .blue))
+                }
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Theme")
+                        .foregroundColor(.white)
+                    Spacer()
+                    Picker("", selection: $selectedTheme) {
+                        Text("Light").tag("Light")
+                        Text("Dark").tag("Dark")
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .frame(width: 100)
+                    .background(Color.blue.opacity(0.2))
+                    .cornerRadius(8)
+                    .padding(.trailing)
+                }
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
+                .padding(.horizontal)
+
+                Spacer()
+            }
+        }
+        .navigationBarHidden(true)
     }
 }
 
