@@ -8,15 +8,23 @@
 import SwiftUI
 import UIKit
 
+class Settings: ObservableObject {
+    @Published var animationDuration: Double = 3.0
+}
+
 struct ContentView: View {
+    @StateObject private var settings = Settings()
+    
     var body: some View {
         NavigationView {
             FirstPageView()
+                .environmentObject(settings)
         }
     }
 }
 
 struct FirstPageView: View {
+    @EnvironmentObject var settings: Settings
     @State private var message = "Welcome to Breathe"
 
     var body: some View {
@@ -68,6 +76,7 @@ struct FirstPageView: View {
 }
 
 struct SecondPageView: View {
+    @EnvironmentObject var settings: Settings
     @State private var isExpanded = false
 
     var body: some View {
@@ -77,22 +86,37 @@ struct SecondPageView: View {
                 .fill(Color.blue)
                 .frame(width: isExpanded ? 200 : 10, height: isExpanded ? 200 : 10)
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        withAnimation(.easeInOut(duration: 3)) {
-                            isExpanded = true
-                        }
-                        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
-                            withAnimation(.easeInOut(duration: 3)) {
-                                isExpanded.toggle()
-                            }
-                        }
+                    startAnimation()
+                }
+                .onChange(of: settings.animationDuration) {
+                    startAnimation()
+                }
+        }
+    }
+
+    private func startAnimation() {
+        isExpanded = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            withAnimation(.easeInOut(duration: settings.animationDuration)) {
+                isExpanded = true
+            }
+            Timer.scheduledTimer(withTimeInterval: settings.animationDuration, repeats: true) { _ in
+                withAnimation(.easeInOut(duration: settings.animationDuration)) {
+                    isExpanded.toggle()
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + settings.animationDuration) {
+                    withAnimation(.easeInOut(duration: settings.animationDuration)) {
+                        isExpanded.toggle()
                     }
                 }
+            }
         }
     }
 }
 
 struct SettingsPageView: View {
+    @EnvironmentObject var settings: Settings
     @State private var notificationsEnabled = false
     @State private var selectedTheme = "Light"
     
@@ -113,6 +137,19 @@ struct SettingsPageView: View {
                     Toggle("", isOn: $notificationsEnabled)
                         .labelsHidden()
                         .toggleStyle(SwitchToggleStyle(tint: .blue))
+                }
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Animation Speed")
+                        .foregroundColor(.white)
+                    Spacer()
+                    Slider(value: $settings.animationDuration, in: 1...5, step: 0.5)
+                        .accentColor(.blue)
+                        .frame(width: 150)
                 }
                 .padding()
                 .background(Color.gray.opacity(0.2))
@@ -146,5 +183,5 @@ struct SettingsPageView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView().environmentObject(Settings())
 }
