@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct health_pilotApp: App {
+    @StateObject private var settings = Settings()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(settings)
         }
     }
 }

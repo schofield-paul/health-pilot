@@ -47,7 +47,7 @@ struct FirstPageView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: SecondPageView()) {
+                NavigationLink(destination: SecondPageView().environmentObject(settings)) {
                     Text("Start")
                         .font(.title2)
                         .foregroundColor(.blue)
@@ -59,7 +59,7 @@ struct FirstPageView: View {
                 }
                 .padding(.bottom, 50)
 
-                NavigationLink(destination: SettingsPageView()) {
+                NavigationLink(destination: SettingsPageView().environmentObject(settings)) {
                     Text("Settings")
                         .font(.title2)
                         .foregroundColor(.gray)
@@ -89,31 +89,28 @@ struct SecondPageView: View {
                     startAnimation()
                 }
                 .onChange(of: settings.animationDuration) {
-                    startAnimation()
+                    restartAnimation()
                 }
         }
     }
 
     private func startAnimation() {
-        isExpanded = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            withAnimation(.easeInOut(duration: settings.animationDuration)) {
-                isExpanded = true
-            }
-            Timer.scheduledTimer(withTimeInterval: settings.animationDuration, repeats: true) { _ in
-                withAnimation(.easeInOut(duration: settings.animationDuration)) {
-                    isExpanded.toggle()
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + settings.animationDuration) {
-                    withAnimation(.easeInOut(duration: settings.animationDuration)) {
-                        isExpanded.toggle()
-                    }
-                }
-            }
+        withAnimation(.easeInOut(duration: settings.animationDuration)) {
+            isExpanded.toggle()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + settings.animationDuration) {
+            startAnimation()
         }
     }
+    
+    private func restartAnimation() {
+        isExpanded = false
+        startAnimation()
+    }
 }
+
+
 
 struct SettingsPageView: View {
     @EnvironmentObject var settings: Settings
@@ -180,8 +177,4 @@ struct SettingsPageView: View {
         }
         .navigationBarHidden(false)
     }
-}
-
-#Preview {
-    ContentView().environmentObject(Settings())
 }
