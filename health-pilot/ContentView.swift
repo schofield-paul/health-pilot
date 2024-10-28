@@ -110,8 +110,6 @@ struct SecondPageView: View {
     }
 }
 
-
-
 struct SettingsPageView: View {
     @EnvironmentObject var settings: Settings
     @State private var notificationsEnabled = false
@@ -128,19 +126,6 @@ struct SettingsPageView: View {
                     .padding(.top, 20)
                 
                 HStack {
-                    Text("Enable Notifications")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Toggle("", isOn: $notificationsEnabled)
-                        .labelsHidden()
-                        .toggleStyle(SwitchToggleStyle(tint: .blue))
-                }
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                
-                HStack {
                     Text("Animation Speed")
                         .foregroundColor(.white)
                     Spacer()
@@ -149,32 +134,16 @@ struct SettingsPageView: View {
                         .frame(width: 150)
                 }
                 .padding()
-                .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal)
-                
-                HStack {
-                    Text("Theme")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Picker("", selection: $selectedTheme) {
-                        Text("Light").tag("Light")
-                        Text("Dark").tag("Dark")
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .frame(width: 100)
-                    .background(Color.blue.opacity(0.2))
-                    .cornerRadius(8)
-                    .padding(.trailing)
-                }
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-                .padding(.horizontal)
-
+                .padding(.top, 15)
                 Spacer()
             }
         }
         .navigationBarHidden(false)
     }
+}
+
+#Preview {
+    ContentView()
 }
