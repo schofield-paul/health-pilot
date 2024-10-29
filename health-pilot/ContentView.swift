@@ -125,18 +125,43 @@ struct SettingsPageView: View {
                     .foregroundColor(.white)
                     .padding(.top, 20)
                 
-                HStack {
-                    Text("Animation Speed")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Slider(value: $settings.animationDuration, in: 1...5, step: 0.5)
-                        .accentColor(.blue)
-                        .frame(width: 150)
+                VStack {
+                    HStack {
+                        Text("Animation Speed")
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.leading)
+                    
+                    HStack {
+                        Text("1s")
+                            .foregroundColor(.gray)
+                        
+                        Slider(value: $settings.animationDuration, in: 1...5, step: 0.5)
+                            .accentColor(.blue)
+                            .frame(width: 150)
+                            .overlay(
+                                HStack {
+                                    ForEach(1..<6) { tick in
+                                        Spacer()
+                                        Rectangle()
+                                            .frame(width: 1, height: 8)
+                                            .foregroundColor(.gray)
+                                    }
+                                    Spacer()
+                                }
+                            )
+                        
+                        Text("5s")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.horizontal)
                 }
                 .padding()
                 .cornerRadius(10)
                 .padding(.horizontal)
                 .padding(.top, 15)
+                
                 Spacer()
             }
         }
