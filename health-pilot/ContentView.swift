@@ -9,7 +9,8 @@ import SwiftUI
 import UIKit
 
 class Settings: ObservableObject {
-    @Published var animationDuration: Double = 3.0
+    @Published var expansionDuration: Double = 3.0
+    @Published var contractionDuration: Double = 3.0
 }
 
 struct ContentView: View {
@@ -88,18 +89,22 @@ struct SecondPageView: View {
                 .onAppear {
                     startAnimation()
                 }
-                .onChange(of: settings.animationDuration) {
+                .onChange(of: settings.expansionDuration) { _ in
+                    restartAnimation()
+                }
+                .onChange(of: settings.contractionDuration) { _ in
                     restartAnimation()
                 }
         }
     }
 
     private func startAnimation() {
-        withAnimation(.easeInOut(duration: settings.animationDuration)) {
+        let duration = isExpanded ? settings.contractionDuration : settings.expansionDuration
+        withAnimation(.easeInOut(duration: duration)) {
             isExpanded.toggle()
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + settings.animationDuration) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
             startAnimation()
         }
     }
@@ -112,8 +117,6 @@ struct SecondPageView: View {
 
 struct SettingsPageView: View {
     @EnvironmentObject var settings: Settings
-    @State private var notificationsEnabled = false
-    @State private var selectedTheme = "Light"
     
     var body: some View {
         ZStack {
@@ -127,7 +130,7 @@ struct SettingsPageView: View {
                 
                 VStack {
                     HStack {
-                        Text("Animation Speed")
+                        Text("Expansion Speed")
                             .foregroundColor(.white)
                         Spacer()
                     }
@@ -137,7 +140,38 @@ struct SettingsPageView: View {
                         Text("1s")
                             .foregroundColor(.gray)
                         
-                        Slider(value: $settings.animationDuration, in: 1...5, step: 0.5)
+                        Slider(value: $settings.expansionDuration, in: 1...5, step: 0.5)
+                            .accentColor(.blue)
+                            .frame(width: 150)
+                            .overlay(
+                                HStack {
+                                    ForEach(1..<6) { tick in
+                                        Spacer()
+                                        Rectangle()
+                                            .frame(width: 1, height: 8)
+                                            .foregroundColor(.gray)
+                                    }
+                                    Spacer()
+                                }
+                            )
+                        
+                        Text("5s")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack {
+                        Text("Contraction Speed")
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.leading)
+                    
+                    HStack {
+                        Text("1s")
+                            .foregroundColor(.gray)
+                        
+                        Slider(value: $settings.contractionDuration, in: 1...5, step: 0.5)
                             .accentColor(.blue)
                             .frame(width: 150)
                             .overlay(
