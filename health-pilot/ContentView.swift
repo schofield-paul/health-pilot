@@ -41,8 +41,8 @@ struct FirstPageView: View {
                 ZStack {
                     ForEach(0..<10) { index in
                         Circle()
-                            .stroke(Color.blue.opacity(Double(10 - index) / 10), lineWidth: 2)
-                            .frame(width: CGFloat(100 + index * 20), height: CGFloat(100 + index * 20))
+                            .stroke(Color.blue.opacity(opacity(for: index)), lineWidth: 2)
+                            .frame(width: circleFrame(for: index), height: circleFrame(for: index))
                     }
                 }
                 
@@ -73,6 +73,14 @@ struct FirstPageView: View {
             }
             .padding()
         }
+    }
+
+    private func circleFrame(for index: Int) -> CGFloat {
+        return CGFloat(100 + index * 20)
+    }
+    
+    private func opacity(for index: Int) -> Double {
+        return Double(10 - index) / 10
     }
 }
 
