@@ -87,6 +87,7 @@ struct FirstPageView: View {
 struct SecondPageView: View {
     @EnvironmentObject var settings: Settings
     @State private var isExpanded = false
+    private let hapticFeedback = UIImpactFeedbackGenerator(style: .medium)
 
     var body: some View {
         ZStack {
@@ -108,6 +109,10 @@ struct SecondPageView: View {
 
     private func startAnimation() {
         let duration = isExpanded ? settings.contractionDuration : settings.expansionDuration
+        
+        hapticFeedback.prepare()
+        hapticFeedback.impactOccurred()
+        
         withAnimation(.easeInOut(duration: duration)) {
             isExpanded.toggle()
         }
