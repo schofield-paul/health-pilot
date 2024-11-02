@@ -93,7 +93,7 @@ struct SecondPageView: View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             Circle()
-                .fill(Color.blue)
+                .fill(isExpanded ? Color.blue : Color.green)
                 .frame(width: isExpanded ? 200 : 10, height: isExpanded ? 200 : 10)
                 .onAppear {
                     startAnimation()
@@ -104,6 +104,7 @@ struct SecondPageView: View {
                 .onChange(of: settings.contractionDuration) { _ in
                     restartAnimation()
                 }
+
         }
     }
 
